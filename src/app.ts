@@ -1,20 +1,31 @@
-import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
-import { usersGetApp } from './apis/users/get';
-import { usersPostApp } from './apis/users/post';
-import { usersByIdGetApp } from './apis/users/[id]/get';
-import { usersByIdPutApp } from './apis/users/[id]/put';
-import { usersByIdDeleteApp } from './apis/users/[id]/delete';
+import { hc } from 'hono/client';
+import {
+  usersByIdDeleteHandlers,
+  usersByIdDeletePath,
+} from './apis/users/[id]/delete';
+import { usersByIdGetHandlers, usersByIdGetPath } from './apis/users/[id]/get';
+import { usersByIdPutHandlers, usersByIdPutPath } from './apis/users/[id]/put';
+import { usersGetHandlers, usersGetPath } from './apis/users/get';
+import { usersPostHandlers, usersPostPath } from './apis/users/post';
+import { factory } from './factory';
 
-const app = new Hono();
+const app = factory.createApp();
+
+// ローカル実行時のモックBindings設定
+app.use('*', async (c, next) => {
+  c.env.event = {} as any;
+  c.env.lambdaContext = {} as any;
+  await next();
+});
 
 // Mount API routes
 const routes = app
-  .route('/', usersGetApp)
-  .route('/', usersPostApp)
-  .route('/', usersByIdGetApp)
-  .route('/', usersByIdPutApp)
-  .route('/', usersByIdDeleteApp);
+  .get(usersGetPath, ...usersGetHandlers)
+  .post(usersPostPath, ...usersPostHandlers)
+  .get(usersByIdGetPath, ...usersByIdGetHandlers)
+  .put(usersByIdPutPath, ...usersByIdPutHandlers)
+  .delete(usersByIdDeletePath, ...usersByIdDeleteHandlers);
 
 // Base route
 app.get('/', (c) => {
@@ -40,3 +51,6 @@ serve({
 
 // Export the app type for RPC client
 export type AppType = typeof routes;
+
+const client = hc<AppType>('http://localhost:3000');
+client.users.$get;

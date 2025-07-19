@@ -1,5 +1,5 @@
 import { hc } from 'hono/client';
-import type { AppType } from './src/app';
+import type { AppType } from './app';
 
 // Create type-safe RPC client
 const client = hc<AppType>('http://localhost:3000');
@@ -91,23 +91,23 @@ async function testAllApis() {
   console.log('\n');
 
   // 2. Create a new user
-  await createUser('test-user-123');
+  await createUser('123');
   console.log('\n');
 
   // 3. Get the created user
-  await getUser('test-user-123');
+  await getUser('123');
   console.log('\n');
 
   // 4. Update the user
-  await updateUser('test-user-123');
+  await updateUser('123');
   console.log('\n');
 
   // 5. Delete the user
-  await deleteUser('test-user-123');
+  await deleteUser('123');
   console.log('\n');
 
   // 6. Try to get deleted user (should still work as it's mock data)
-  await getUser('test-user-123');
+  await getUser('123');
   console.log('\n');
 
   console.log('✅ RPC API tests completed!');

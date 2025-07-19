@@ -1,15 +1,17 @@
-import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { z } from 'zod';
+import { Hono } from 'hono';
 import { handle } from 'hono/aws-lambda';
+import { userSchema } from '../../../domains/user';
+import { factory } from '../../../factory';
+import { commonMiddlewares } from '../../../middlewares/common';
+import { formatValidateErrorResponse } from '../../../middlewares/utils/format-validate-error-response';
 
-const userParamSchema = z.object({
-  id: z.string().min(1),
-});
+const userParamSchema = userSchema.pick({ id: true });
 
-export const usersByIdGetApp = new Hono()
-  // GET /users/:id - Get specific user
-  .get('/users/:id', zValidator('param', userParamSchema), (c) => {
+export const usersByIdGetHandlers = factory.createHandlers(
+  ...commonMiddlewares,
+  zValidator('param', userParamSchema, formatValidateErrorResponse),
+  (c) => {
     const { id } = c.req.valid('param');
 
     const user = {
@@ -18,7 +20,12 @@ export const usersByIdGetApp = new Hono()
     };
 
     return c.json({ user });
-  });
+  },
+);
+
+export const usersByIdGetPath = '/users/:id';
 
 // Lambda handler for API Gateway
-export const handler = handle(usersByIdGetApp);
+export const handler = handle(
+  new Hono().get(usersByIdGetPath, ...usersByIdGetHandlers),
+);
