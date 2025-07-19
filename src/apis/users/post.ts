@@ -9,7 +9,7 @@ const createUserSchema = z.object({
 
 export const usersPostApp = new Hono()
   // POST /users - Create user
-  .post('/', zValidator('json', createUserSchema), (c) => {
+  .post('/users', zValidator('json', createUserSchema), (c) => {
     const { id } = c.req.valid('json');
 
     const newUser = {

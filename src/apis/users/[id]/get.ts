@@ -9,7 +9,7 @@ const userParamSchema = z.object({
 
 export const usersByIdGetApp = new Hono()
   // GET /users/:id - Get specific user
-  .get('/:id', zValidator('param', userParamSchema), (c) => {
+  .get('/users/:id', zValidator('param', userParamSchema), (c) => {
     const { id } = c.req.valid('param');
 
     const user = {

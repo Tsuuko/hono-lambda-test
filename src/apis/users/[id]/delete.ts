@@ -9,7 +9,7 @@ const userParamSchema = z.object({
 
 export const usersByIdDeleteApp = new Hono()
   // DELETE /users/:id - Delete user
-  .delete('/:id', zValidator('param', userParamSchema), (c) => {
+  .delete('/users/:id', zValidator('param', userParamSchema), (c) => {
     const { id } = c.req.valid('param');
 
     return c.json({ message: `User ${id} deleted successfully` });

@@ -10,11 +10,11 @@ const app = new Hono();
 
 // Mount API routes
 const routes = app
-  .route('/users', usersGetApp)
-  .route('/users', usersPostApp)
-  .route('/users', usersByIdGetApp)
-  .route('/users', usersByIdPutApp)
-  .route('/users', usersByIdDeleteApp);
+  .route('/', usersGetApp)
+  .route('/', usersPostApp)
+  .route('/', usersByIdGetApp)
+  .route('/', usersByIdPutApp)
+  .route('/', usersByIdDeleteApp);
 
 // Base route
 app.get('/', (c) => {

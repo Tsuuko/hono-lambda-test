@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsx ./src/app.ts",
+    "dev": "tsx watch ./src/app.ts",
     "client": "tsx ./src/client.ts",
     "test": "vitest",
     "test:ui": "vitest --ui",

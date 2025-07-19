@@ -9,7 +9,7 @@ const userParamSchema = z.object({
 
 export const usersByIdPutApp = new Hono()
   // PUT /users/:id - Update user
-  .put('/:id', zValidator('param', userParamSchema), (c) => {
+  .put('/users/:id', zValidator('param', userParamSchema), (c) => {
     const { id } = c.req.valid('param');
 
     const updatedUser = {

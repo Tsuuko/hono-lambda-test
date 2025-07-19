@@ -3,7 +3,7 @@ import { handle } from 'hono/aws-lambda';
 
 export const usersGetApp = new Hono()
   // GET /users - Get all users
-  .get('/', (c) => {
+  .get('/users', (c) => {
     const users = [{ id: 'user1' }, { id: 'user2' }, { id: 'user3' }];
     return c.json({ users });
   });
