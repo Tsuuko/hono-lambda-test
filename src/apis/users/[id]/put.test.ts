@@ -34,12 +34,12 @@ describe('PUT /users/:id', () => {
 
   it('should handle different numeric IDs', async () => {
     const testIds = ['1', '999', '0', '12345'];
-    
+
     for (const id of testIds) {
       const res = await testApp.request(`/users/${id}`, { method: 'PUT' });
-      
+
       expect(res.status).toBe(200);
-      
+
       const data = await res.json();
       expect(data.user.id).toBe(id);
       expect(data.user.updatedAt).toBeDefined();
@@ -48,12 +48,12 @@ describe('PUT /users/:id', () => {
 
   it('should return 400 for non-numeric id', async () => {
     const invalidIds = ['non-numeric-id', 'abc', '12abc', 'special!@#'];
-    
+
     for (const id of invalidIds) {
       const res = await testApp.request(`/users/${id}`, { method: 'PUT' });
-      
+
       expect(res.status).toBe(400);
-      
+
       const data = await res.json();
       expect(data).toHaveProperty('error');
     }
@@ -71,12 +71,12 @@ describe('PUT /users/:id', () => {
       { id: '001', expected: '001' },
       { id: '9999999999', expected: '9999999999' },
     ];
-    
+
     for (const { id, expected } of edgeCases) {
       const res = await testApp.request(`/users/${id}`, { method: 'PUT' });
-      
+
       expect(res.status).toBe(200);
-      
+
       const data = await res.json();
       expect(data.user.id).toBe(expected);
     }
@@ -95,13 +95,17 @@ describe('PUT /users/:id', () => {
     const res = await testApp.request('/users/123', { method: 'PUT' });
     const data = await res.json();
 
-    expect(data.user.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
-    expect(new Date(data.user.updatedAt).toISOString()).toBe(data.user.updatedAt);
+    expect(data.user.updatedAt).toMatch(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+    );
+    expect(new Date(data.user.updatedAt).toISOString()).toBe(
+      data.user.updatedAt,
+    );
   });
 
   it('should handle only PUT method', async () => {
     const methods = ['GET', 'POST', 'DELETE', 'PATCH'];
-    
+
     for (const method of methods) {
       const res = await testApp.request('/users/123', { method });
       expect(res.status).toBe(404);
@@ -110,9 +114,9 @@ describe('PUT /users/:id', () => {
 
   it('should generate unique timestamps for concurrent updates', async () => {
     const res1 = await testApp.request('/users/101', { method: 'PUT' });
-    
-    await new Promise(resolve => setTimeout(resolve, 1));
-    
+
+    await new Promise((resolve) => setTimeout(resolve, 1));
+
     const res2 = await testApp.request('/users/102', { method: 'PUT' });
 
     const data1 = await res1.json();
@@ -124,9 +128,9 @@ describe('PUT /users/:id', () => {
   it('should preserve ID in response', async () => {
     const testId = '789';
     const res = await testApp.request(`/users/${testId}`, { method: 'PUT' });
-    
+
     expect(res.status).toBe(200);
-    
+
     const data = await res.json();
     expect(data.user.id).toBe(testId);
     expect(data.user).toHaveProperty('updatedAt');

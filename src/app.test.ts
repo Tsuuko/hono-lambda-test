@@ -4,7 +4,10 @@ import { usersGetHandlers, usersGetPath } from './apis/users/get';
 import { usersPostHandlers, usersPostPath } from './apis/users/post';
 import { usersByIdGetHandlers, usersByIdGetPath } from './apis/users/[id]/get';
 import { usersByIdPutHandlers, usersByIdPutPath } from './apis/users/[id]/put';
-import { usersByIdDeleteHandlers, usersByIdDeletePath } from './apis/users/[id]/delete';
+import {
+  usersByIdDeleteHandlers,
+  usersByIdDeletePath,
+} from './apis/users/[id]/delete';
 
 const testApp = new Hono()
   .use('*', (c, next) => {
@@ -49,7 +52,9 @@ describe('App Integration Tests', () => {
       expect(updateData.user.updatedAt).toBeDefined();
 
       // Delete user
-      const deleteRes = await testApp.request('/users/999', { method: 'DELETE' });
+      const deleteRes = await testApp.request('/users/999', {
+        method: 'DELETE',
+      });
       expect(deleteRes.status).toBe(200);
       const deleteData = await deleteRes.json();
       expect(deleteData.message).toBe('User 999 deleted successfully');
@@ -63,7 +68,7 @@ describe('App Integration Tests', () => {
       expect(data).toHaveProperty('users');
       expect(Array.isArray(data.users)).toBe(true);
       expect(data.users).toHaveLength(3);
-      
+
       data.users.forEach((user: any) => {
         expect(user).toHaveProperty('id');
         expect(typeof user.id).toBe('string');
@@ -81,7 +86,9 @@ describe('App Integration Tests', () => {
       const data = await res.json();
       expect(data.user.id).toBe('888');
       expect(data.user.createdAt).toBeDefined();
-      expect(new Date(data.user.createdAt).toISOString()).toBe(data.user.createdAt);
+      expect(new Date(data.user.createdAt).toISOString()).toBe(
+        data.user.createdAt,
+      );
     });
 
     it('should handle GET /users/:id with validation', async () => {
@@ -100,7 +107,9 @@ describe('App Integration Tests', () => {
       const data = await res.json();
       expect(data.user.id).toBe('123');
       expect(data.user.updatedAt).toBeDefined();
-      expect(new Date(data.user.updatedAt).toISOString()).toBe(data.user.updatedAt);
+      expect(new Date(data.user.updatedAt).toISOString()).toBe(
+        data.user.updatedAt,
+      );
     });
 
     it('should handle DELETE /users/:id with confirmation', async () => {
@@ -142,7 +151,7 @@ describe('App Integration Tests', () => {
         for (const id of invalidIds) {
           const res = await testApp.request(`/users/${id}`, { method });
           expect(res.status).toBe(400);
-          
+
           const data = await res.json();
           expect(data).toHaveProperty('error');
         }
@@ -186,26 +195,26 @@ describe('App Integration Tests', () => {
   describe('HTTP Method Validation', () => {
     it('should only allow specified methods for each endpoint', async () => {
       const routes = [
-        { 
-          path: '/users', 
+        {
+          path: '/users',
           allowedMethods: ['GET', 'POST'],
           testRequests: {
-            'GET': { expectedStatus: 200 },
-            'POST': { 
+            GET: { expectedStatus: 200 },
+            POST: {
               expectedStatus: 201,
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id: '123' })
-            }
-          }
+              body: JSON.stringify({ id: '123' }),
+            },
+          },
         },
-        { 
-          path: '/users/123', 
+        {
+          path: '/users/123',
           allowedMethods: ['GET', 'PUT', 'DELETE'],
           testRequests: {
-            'GET': { expectedStatus: 200 },
-            'PUT': { expectedStatus: 200 },
-            'DELETE': { expectedStatus: 200 }
-          }
+            GET: { expectedStatus: 200 },
+            PUT: { expectedStatus: 200 },
+            DELETE: { expectedStatus: 200 },
+          },
         },
       ];
 
@@ -220,7 +229,7 @@ describe('App Integration Tests', () => {
             headers: testRequest?.headers,
             body: testRequest?.body,
           });
-          
+
           expect(res.status).toBe(testRequest?.expectedStatus || 200);
         }
 
@@ -246,7 +255,9 @@ describe('App Integration Tests', () => {
       for (const req of requests) {
         const res = await testApp.request(req.path, {
           method: req.method,
-          headers: req.body ? { 'Content-Type': 'application/json' } : undefined,
+          headers: req.body
+            ? { 'Content-Type': 'application/json' }
+            : undefined,
           body: req.body ? JSON.stringify(req.body) : undefined,
         });
 
@@ -257,10 +268,7 @@ describe('App Integration Tests', () => {
     });
 
     it('should handle performance requirements', async () => {
-      const requests = [
-        '/users',
-        '/users/123',
-      ];
+      const requests = ['/users', '/users/123'];
 
       for (const path of requests) {
         const startTime = Date.now();

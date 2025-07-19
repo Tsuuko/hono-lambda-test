@@ -29,7 +29,9 @@ describe('POST /users', () => {
     expect(data.user.id).toBe('123');
     expect(data.user.createdAt).toBeDefined();
     expect(typeof data.user.createdAt).toBe('string');
-    expect(new Date(data.user.createdAt).toISOString()).toBe(data.user.createdAt);
+    expect(new Date(data.user.createdAt).toISOString()).toBe(
+      data.user.createdAt,
+    );
   });
 
   it('should return JSON content type for successful creation', async () => {
@@ -54,7 +56,7 @@ describe('POST /users', () => {
     });
 
     expect(res.status).toBe(400);
-    
+
     const data = await res.json();
     expect(data).toHaveProperty('error');
   });
@@ -69,7 +71,7 @@ describe('POST /users', () => {
     });
 
     expect(res.status).toBe(400);
-    
+
     const data = await res.json();
     expect(data).toHaveProperty('error');
   });
@@ -84,7 +86,7 @@ describe('POST /users', () => {
     });
 
     expect(res.status).toBe(400);
-    
+
     const data = await res.json();
     expect(data).toHaveProperty('error');
   });
@@ -112,7 +114,7 @@ describe('POST /users', () => {
 
   it('should handle numeric string ids correctly', async () => {
     const testIds = ['1', '999', '0'];
-    
+
     for (const id of testIds) {
       const res = await testApp.request('/users', {
         method: 'POST',
@@ -123,7 +125,7 @@ describe('POST /users', () => {
       });
 
       expect(res.status).toBe(201);
-      
+
       const data = await res.json();
       expect(data.user.id).toBe(id);
     }
@@ -138,7 +140,7 @@ describe('POST /users', () => {
       body: JSON.stringify({ id: '101' }),
     });
 
-    await new Promise(resolve => setTimeout(resolve, 1));
+    await new Promise((resolve) => setTimeout(resolve, 1));
 
     const res2 = await testApp.request('/users', {
       method: 'POST',

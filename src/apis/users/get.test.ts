@@ -22,10 +22,10 @@ describe('GET /users', () => {
     expect(data).toEqual({
       users: [{ id: 'user1' }, { id: 'user2' }, { id: 'user3' }],
     });
-    
+
     expect(Array.isArray(data.users)).toBe(true);
     expect(data.users).toHaveLength(3);
-    
+
     data.users.forEach((user: any) => {
       expect(user).toHaveProperty('id');
       expect(typeof user.id).toBe('string');

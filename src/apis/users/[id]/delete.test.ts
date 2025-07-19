@@ -32,12 +32,12 @@ describe('DELETE /users/:id', () => {
 
   it('should handle different numeric IDs', async () => {
     const testIds = ['1', '999', '0', '12345'];
-    
+
     for (const id of testIds) {
       const res = await testApp.request(`/users/${id}`, { method: 'DELETE' });
-      
+
       expect(res.status).toBe(200);
-      
+
       const data = await res.json();
       expect(data.message).toBe(`User ${id} deleted successfully`);
     }
@@ -45,12 +45,12 @@ describe('DELETE /users/:id', () => {
 
   it('should return 400 for non-numeric id', async () => {
     const invalidIds = ['non-numeric-id', 'abc', '12abc', 'special!@#'];
-    
+
     for (const id of invalidIds) {
       const res = await testApp.request(`/users/${id}`, { method: 'DELETE' });
-      
+
       expect(res.status).toBe(400);
-      
+
       const data = await res.json();
       expect(data).toHaveProperty('error');
     }
@@ -68,12 +68,12 @@ describe('DELETE /users/:id', () => {
       { id: '001', expected: 'User 001 deleted successfully' },
       { id: '9999999999', expected: 'User 9999999999 deleted successfully' },
     ];
-    
+
     for (const { id, expected } of edgeCases) {
       const res = await testApp.request(`/users/${id}`, { method: 'DELETE' });
-      
+
       expect(res.status).toBe(200);
-      
+
       const data = await res.json();
       expect(data.message).toBe(expected);
     }
@@ -90,7 +90,7 @@ describe('DELETE /users/:id', () => {
 
   it('should handle only DELETE method', async () => {
     const methods = ['GET', 'POST', 'PUT', 'PATCH'];
-    
+
     for (const method of methods) {
       const res = await testApp.request('/users/123', { method });
       expect(res.status).toBe(404);
@@ -99,11 +99,11 @@ describe('DELETE /users/:id', () => {
 
   it('should return consistent message format', async () => {
     const testIds = ['1', '2', '3'];
-    
+
     for (const id of testIds) {
       const res = await testApp.request(`/users/${id}`, { method: 'DELETE' });
       const data = await res.json();
-      
+
       expect(data.message).toMatch(/^User \d+ deleted successfully$/);
       expect(data.message).toContain(id);
     }
@@ -112,9 +112,9 @@ describe('DELETE /users/:id', () => {
   it('should preserve ID in deletion message', async () => {
     const testId = '789';
     const res = await testApp.request(`/users/${testId}`, { method: 'DELETE' });
-    
+
     expect(res.status).toBe(200);
-    
+
     const data = await res.json();
     expect(data.message).toBe(`User ${testId} deleted successfully`);
     expect(Object.keys(data)).toEqual(['message']);
@@ -122,19 +122,21 @@ describe('DELETE /users/:id', () => {
 
   it('should handle URL encoding correctly', async () => {
     const res = await testApp.request('/users/123', { method: 'DELETE' });
-    
+
     expect(res.status).toBe(200);
-    
+
     const data = await res.json();
     expect(data.message).toBe('User 123 deleted successfully');
   });
 
   it('should validate id parameter before deletion', async () => {
     const invalidId = 'invalid-id';
-    const res = await testApp.request(`/users/${invalidId}`, { method: 'DELETE' });
-    
+    const res = await testApp.request(`/users/${invalidId}`, {
+      method: 'DELETE',
+    });
+
     expect(res.status).toBe(400);
-    
+
     const data = await res.json();
     expect(data).toHaveProperty('error');
     expect(data.message).toBeUndefined();
