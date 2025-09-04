@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@hono/zod-validator':
         specifier: ^0.7.1
-        version: 0.7.2(hono@4.8.5)(zod@4.0.5)
+        version: 0.7.2(hono@4.9.6)(zod@4.0.5)
       hono:
-        specifier: ^4.8.5
-        version: 4.8.5
+        specifier: ^4.9.6
+        version: 4.9.6
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -23,7 +23,7 @@ importers:
     devDependencies:
       '@hono/node-server':
         specifier: ^1.16.0
-        version: 1.17.0(hono@4.8.5)
+        version: 1.17.0(hono@4.9.6)
       '@tsconfig/recommended':
         specifier: ^1.0.10
         version: 1.0.10
@@ -434,8 +434,8 @@ packages:
   get-tsconfig@4.10.1:
     resolution: {integrity: sha512-auHyJ4AgMz7vgS8Hp3N6HXSmlMdUyhSUrfBF16w153rxtLIEOE+HGqaBppczZvnHLqQJfiHotCYpNhl0lUROFQ==}
 
-  hono@4.8.5:
-    resolution: {integrity: sha512-Up2cQbtNz1s111qpnnECdTGqSIUIhZJMLikdKkshebQSEBcoUKq6XJayLGqSZWidiH0zfHRCJqFu062Mz5UuRA==}
+  hono@4.9.6:
+    resolution: {integrity: sha512-doVjXhSFvYZ7y0dNokjwwSahcrAfdz+/BCLvAMa/vHLzjj8+CFyV5xteThGUsKdkaasgN+gF2mUxao+SGLpUeA==}
     engines: {node: '>=16.9.0'}
 
   js-tokens@9.0.1:
@@ -710,13 +710,13 @@ snapshots:
   '@esbuild/win32-x64@0.25.7':
     optional: true
 
-  '@hono/node-server@1.17.0(hono@4.8.5)':
+  '@hono/node-server@1.17.0(hono@4.9.6)':
     dependencies:
-      hono: 4.8.5
+      hono: 4.9.6
 
-  '@hono/zod-validator@0.7.2(hono@4.8.5)(zod@4.0.5)':
+  '@hono/zod-validator@0.7.2(hono@4.9.6)(zod@4.0.5)':
     dependencies:
-      hono: 4.8.5
+      hono: 4.9.6
       zod: 4.0.5
 
   '@jridgewell/sourcemap-codec@1.5.4': {}
@@ -922,7 +922,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  hono@4.8.5: {}
+  hono@4.9.6: {}
 
   js-tokens@9.0.1: {}
 
