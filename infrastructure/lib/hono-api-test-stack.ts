@@ -90,7 +90,7 @@ export class HonoApiTestStack extends cdk.Stack {
       restApiName: 'Hono Microservices API',
       description: 'Hono Lambda Microservices API',
       deployOptions: {
-        stageName: 'v1',
+        stageName: '$default',
       },
     });
 

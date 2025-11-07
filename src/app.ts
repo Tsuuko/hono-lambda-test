@@ -8,9 +8,9 @@ import { usersByIdGetHandlers, usersByIdGetPath } from './apis/users/[id]/get';
 import { usersByIdPutHandlers, usersByIdPutPath } from './apis/users/[id]/put';
 import { usersGetHandlers, usersGetPath } from './apis/users/get';
 import { usersPostHandlers, usersPostPath } from './apis/users/post';
-import { factory } from './factory';
+import { createApp } from './factory';
 
-const app = factory.createApp();
+const app = createApp();
 
 // ローカル実行時のモックBindings設定
 app.use('*', async (c, next) => {

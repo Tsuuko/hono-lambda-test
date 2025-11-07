@@ -7,3 +7,5 @@ type Bindings = {
 };
 
 export const factory = createFactory<{ Bindings: Bindings }>();
+
+export const createApp = () => factory.createApp();

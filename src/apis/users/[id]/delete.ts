@@ -1,8 +1,7 @@
 import { zValidator } from '@hono/zod-validator';
-import { Hono } from 'hono';
 import { handle } from 'hono/aws-lambda';
 import { userSchema } from '../../../domains/user';
-import { factory } from '../../../factory';
+import { createApp, factory } from '../../../factory';
 import { commonMiddlewares } from '../../../middlewares/common';
 import { formatValidateErrorResponse } from '../../../middlewares/utils/format-validate-error-response';
 
@@ -22,5 +21,5 @@ export const usersByIdDeletePath = '/users/:id';
 
 // Lambda handler for API Gateway
 export const handler = handle(
-  new Hono().delete(usersByIdDeletePath, ...usersByIdDeleteHandlers),
+  createApp().delete(usersByIdDeletePath, ...usersByIdDeleteHandlers),
 );
