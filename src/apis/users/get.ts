@@ -1,6 +1,5 @@
-import { Hono } from 'hono';
 import { handle } from 'hono/aws-lambda';
-import { factory } from '../../factory';
+import { createApp, factory } from '../../factory';
 import { commonMiddlewares } from '../../middlewares/common';
 
 export const usersGetHandlers = factory.createHandlers(
@@ -15,5 +14,5 @@ export const usersGetPath = '/users';
 
 // Lambda handler for API Gateway
 export const handler = handle(
-  new Hono().get(usersGetPath, ...usersGetHandlers),
+  createApp().get(usersGetPath, ...usersGetHandlers),
 );
